@@ -16,6 +16,7 @@ cron.schedule(`* * */1 * *`, () => main());
 
 async function main() {
     try {
+        console.log("Checking...")
         await mongoose.connect(process.env.database as string);
 
         const browser = await chromium.launch({ chromiumSandbox: false });

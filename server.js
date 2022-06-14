@@ -70,6 +70,7 @@ function main() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 8, , 9]);
+                    console.log("Checking...");
                     return [4 /*yield*/, mongoose_1["default"].connect(process.env.database)];
                 case 1:
                     _a.sent();
