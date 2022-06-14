@@ -52,6 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var dotenv_1 = __importDefault(require("dotenv"));
 var playwright_chromium_1 = require("playwright-chromium");
+var node_cron_1 = __importDefault(require("node-cron"));
 var schema_1 = __importDefault(require("./db/schema"));
 var fs_1 = require("fs");
 var twit_1 = __importDefault(require("twit"));
@@ -60,8 +61,7 @@ var report_1 = require("./utilities/report");
 dotenv_1["default"].config();
 var device = playwright_chromium_1.devices["Desktop Chrome"];
 var T = new twit_1["default"]({ consumer_key: process.env.consumer_key, consumer_secret: process.env.consumer_secret, access_token: process.env.access_token, access_token_secret: process.env.access_token_secret });
-//cron.schedule(`* * */1 * *`, () => main());
-main();
+node_cron_1["default"].schedule("* * */1 * *", function () { return main(); });
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var browser, context, report_2, image, error_1;
@@ -116,7 +116,6 @@ function main() {
                     _a.label = 7;
                 case 7:
                     ;
-                    console.log("Done");
                     return [3 /*break*/, 9];
                 case 8:
                     error_1 = _a.sent();
