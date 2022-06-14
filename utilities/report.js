@@ -46,7 +46,7 @@ var pdf2pic_1 = require("pdf2pic");
 var schema_1 = __importDefault(require("../db/schema"));
 var check_1 = require("../models/check");
 var fs_1 = require("fs");
-function check(context, sourceUrl) {
+function check(context) {
     return __awaiter(this, void 0, void 0, function () {
         var page, element, label, url, document;
         return __generator(this, function (_a) {
@@ -54,7 +54,7 @@ function check(context, sourceUrl) {
                 case 0: return [4 /*yield*/, context.newPage()];
                 case 1:
                     page = _a.sent();
-                    return [4 /*yield*/, page.goto(sourceUrl, { timeout: 60000 })];
+                    return [4 /*yield*/, page.goto(process.env.sourceUrl, { timeout: 60000 })];
                 case 2:
                     _a.sent();
                     return [4 /*yield*/, page.locator(':nth-match(a:text("Power Interruption"), 2)')];

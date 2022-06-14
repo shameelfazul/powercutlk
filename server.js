@@ -50,27 +50,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var ts_dotenv_1 = require("ts-dotenv");
+var dotenv_1 = __importDefault(require("dotenv"));
 var playwright_chromium_1 = require("playwright-chromium");
-var node_cron_1 = __importDefault(require("node-cron"));
 var schema_1 = __importDefault(require("./db/schema"));
 var fs_1 = require("fs");
 var twit_1 = __importDefault(require("twit"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var report_1 = require("./utilities/report");
-var env = (0, ts_dotenv_1.load)({
-    database: String,
-    sourceUrl: String,
-    consumer_key: String,
-    consumer_secret: String,
-    access_token: String,
-    access_token_secret: String
-});
+dotenv_1["default"].config();
 var device = playwright_chromium_1.devices["Desktop Chrome"];
-var T = new twit_1["default"]({ consumer_key: env.consumer_key, consumer_secret: env.consumer_secret, access_token: env.access_token, access_token_secret: env.access_token_secret });
-node_cron_1["default"].schedule("* * */1 * *", function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    return [2 /*return*/, main()];
-}); }); });
+var T = new twit_1["default"]({ consumer_key: process.env.consumer_key, consumer_secret: process.env.consumer_secret, access_token: process.env.access_token, access_token_secret: process.env.access_token_secret });
+//cron.schedule(`* * */1 * *`, () => main());
+main();
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var browser, context, report_2, image, error_1;
@@ -79,7 +70,7 @@ function main() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 8, , 9]);
-                    return [4 /*yield*/, mongoose_1["default"].connect(env.database)];
+                    return [4 /*yield*/, mongoose_1["default"].connect(process.env.database)];
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, playwright_chromium_1.chromium.launch({ chromiumSandbox: false })];
@@ -88,7 +79,7 @@ function main() {
                     return [4 /*yield*/, browser.newContext(__assign({ acceptDownloads: true }, device))];
                 case 3:
                     context = _a.sent();
-                    return [4 /*yield*/, (0, report_1.check)(context, env.sourceUrl)];
+                    return [4 /*yield*/, (0, report_1.check)(context)];
                 case 4:
                     report_2 = _a.sent();
                     return [4 /*yield*/, browser.close()];
@@ -98,8 +89,6 @@ function main() {
                     return [4 /*yield*/, (0, report_1.save)(report_2.url)];
                 case 6:
                     _a.sent();
-                    _a.label = 7;
-                case 7:
                     image = (0, fs_1.readFileSync)('temp/output.png', { encoding: 'base64' });
                     T.post('media/upload', { media_data: image }, function (err, data) {
                         if (err)
@@ -124,6 +113,10 @@ function main() {
                             });
                         }); });
                     });
+                    _a.label = 7;
+                case 7:
+                    ;
+                    console.log("Done");
                     return [3 /*break*/, 9];
                 case 8:
                     error_1 = _a.sent();
