@@ -16,7 +16,7 @@ const hook = new Webhook(process.env.DISCORD as string);
 const T = new Twit({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 
 console.log(`[PowerCutLK] : Service Started`)
-cron.schedule(`* */1 * * *`, () => main(), { scheduled: true, timezone: "Asia/Colombo" });
+cron.schedule('0 0-23 * * *', () => main(), { scheduled: true, timezone: "Asia/Colombo" });
 
 async function main() {
     try {
