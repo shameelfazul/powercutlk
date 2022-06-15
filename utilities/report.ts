@@ -44,7 +44,7 @@ export async function save(url : string) {
     await storeAsImage(1);
 
     let image = await Jimp.read('temp/report.1.png');
-    image.print(await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK), image.bitmap.width * 0.35, image.bitmap.height * 0.84, "Twitter - @Powercut_LK")
+    image.print(await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK), image.bitmap.width * 0.35, image.bitmap.height * 0.84, "Twitter - @PowerCut_LK")
     //image.print(await Jimp.loadFont(Jimp.FONT_SANS_16_BLACK), image.bitmap.width * 0.45, image.bitmap.height * 0.89, "Shameel Fazul")
     
     await image.writeAsync(`temp/output.png`)

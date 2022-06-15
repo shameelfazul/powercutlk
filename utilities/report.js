@@ -115,7 +115,7 @@ function save(url) {
                     _b = (_a = image).print;
                     return [4 /*yield*/, jimp_1["default"].loadFont(jimp_1["default"].FONT_SANS_32_BLACK)];
                 case 4:
-                    _b.apply(_a, [_c.sent(), image.bitmap.width * 0.35, image.bitmap.height * 0.84, "Twitter - @Powercut_LK"]);
+                    _b.apply(_a, [_c.sent(), image.bitmap.width * 0.35, image.bitmap.height * 0.84, "Twitter - @PowerCut_LK"]);
                     //image.print(await Jimp.loadFont(Jimp.FONT_SANS_16_BLACK), image.bitmap.width * 0.45, image.bitmap.height * 0.89, "Shameel Fazul")
                     return [4 /*yield*/, image.writeAsync("temp/output.png")];
                 case 5:
