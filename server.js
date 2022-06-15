@@ -58,8 +58,10 @@ var fs_1 = require("fs");
 var twit_1 = __importDefault(require("twit"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var report_1 = require("./utilities/report");
+var discord_webhook_node_1 = require("discord-webhook-node");
 dotenv_1["default"].config();
 var device = playwright_chromium_1.devices["Desktop Chrome"];
+var hook = new discord_webhook_node_1.Webhook(process.env.DISCORD);
 var T = new twit_1["default"]({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 node_cron_1["default"].schedule("* * */1 * *", function () { return main(); });
 function main() {
@@ -105,9 +107,14 @@ function main() {
                                     case 0:
                                         if (err)
                                             throw Error(err);
+                                        hook.setUsername('PowerCut_LK'); //Overrides the default webhook username
+                                        hook.setAvatar('https://pbs.twimg.com/profile_images/1536671063983128577/qwofMeAi_400x400.jpg');
+                                        return [4 /*yield*/, hook.sendFile('temp/output.png')];
+                                    case 1:
+                                        _a.sent();
                                         (0, fs_1.rmSync)('temp', { recursive: true, force: true });
                                         return [4 /*yield*/, schema_1["default"].create({ label: report_2.label, url: report_2.url })];
-                                    case 1:
+                                    case 2:
                                         _a.sent();
                                         return [2 /*return*/];
                                 }

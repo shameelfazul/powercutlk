@@ -7,9 +7,11 @@ import Twit from "twit";
 import mongoose from 'mongoose';
 import { check, save } from './utilities/report';
 import { CheckModel } from './models/check';
+import { Webhook } from "discord-webhook-node";
 
 dotenv.config();
 const device = devices["Desktop Chrome"];
+const hook = new Webhook(process.env.DISCORD as string);
 const T = new Twit({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 
 cron.schedule(`* * */1 * *`, () => main());
@@ -40,6 +42,10 @@ async function main() {
                 }
                 T.post('statuses/update', tweet, async (err) => {
                     if (err) throw Error(err);
+                    
+                    hook.setUsername('PowerCut_LK'); //Overrides the default webhook username
+                    hook.setAvatar('https://pbs.twimg.com/profile_images/1536671063983128577/qwofMeAi_400x400.jpg');
+                    await hook.sendFile('temp/output.png');
     
                     rmSync('temp', { recursive: true, force: true });
                     await database.create({ label: report.label, url: report.url });
