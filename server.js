@@ -58,12 +58,14 @@ var fs_1 = require("fs");
 var twit_1 = __importDefault(require("twit"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var report_1 = require("./utilities/report");
+var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var discord_webhook_node_1 = require("discord-webhook-node");
 dotenv_1["default"].config();
 var device = playwright_chromium_1.devices["Desktop Chrome"];
 var hook = new discord_webhook_node_1.Webhook(process.env.DISCORD);
 var T = new twit_1["default"]({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
-node_cron_1["default"].schedule("* * */1 * *", function () { return main(); });
+console.log("[PowerCutLK] : Service Started");
+node_cron_1["default"].schedule("* */1 * * *", function () { return main(); }, { scheduled: true, timezone: "Asia/Colombo" });
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var browser, context, report_2, image, error_1;
@@ -72,7 +74,7 @@ function main() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 8, , 9]);
-                    console.log("Checking...");
+                    console.log("[PowerCutLK] : ".concat(moment_timezone_1["default"].utc((new Date).getTime()).tz('Asia/Colombo').format('LLLL')));
                     return [4 /*yield*/, mongoose_1["default"].connect(process.env.DATABASE)];
                 case 1:
                     _a.sent();
