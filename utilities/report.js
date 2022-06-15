@@ -54,7 +54,7 @@ function check(context) {
                 case 0: return [4 /*yield*/, context.newPage()];
                 case 1:
                     page = _a.sent();
-                    return [4 /*yield*/, page.goto(process.env.sourceUrl, { timeout: 60000 })];
+                    return [4 /*yield*/, page.goto(process.env.SOURCEURL, { timeout: 60000 })];
                 case 2:
                     _a.sent();
                     return [4 /*yield*/, page.locator(':nth-match(a:text("Power Interruption"), 2)')];
