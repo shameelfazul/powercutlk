@@ -10,14 +10,14 @@ import { CheckModel } from './models/check';
 
 dotenv.config();
 const device = devices["Desktop Chrome"];
-const T = new Twit({ consumer_key: process.env.consumer_key, consumer_secret: process.env.consumer_secret, access_token: process.env.access_token, access_token_secret: process.env.access_token_secret });
+const T = new Twit({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 
 cron.schedule(`* * */1 * *`, () => main());
 
 async function main() {
     try {
         console.log("Checking...")
-        await mongoose.connect(process.env.database as string);
+        await mongoose.connect(process.env.DATABASE as string);
 
         const browser = await chromium.launch({ chromiumSandbox: false });
         const context = await browser.newContext({ acceptDownloads: true, ...device });
