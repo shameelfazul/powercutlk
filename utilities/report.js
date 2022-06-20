@@ -42,7 +42,7 @@ exports.__esModule = true;
 exports.save = exports.check = void 0;
 var jimp_1 = __importDefault(require("jimp"));
 var node_downloader_helper_1 = require("node-downloader-helper");
-var pdf2pic_1 = require("./custom/pdf2pic");
+var pdf2pic_1 = require("pdf2pic");
 var schema_1 = __importDefault(require("../db/schema"));
 var ReportModel_1 = require("../models/ReportModel");
 var fs_1 = require("fs");
