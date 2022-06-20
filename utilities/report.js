@@ -42,7 +42,7 @@ exports.__esModule = true;
 exports.save = exports.check = void 0;
 var jimp_1 = __importDefault(require("jimp"));
 var node_downloader_helper_1 = require("node-downloader-helper");
-var pdf2pic_1 = require("pdf2pic");
+var dist_1 = require("./custom/pdf2pic/dist");
 var schema_1 = __importDefault(require("../db/schema"));
 var ReportModel_1 = require("../models/ReportModel");
 var fs_1 = require("fs");
@@ -108,7 +108,7 @@ function save(url) {
                         width: 1100,
                         height: 720
                     };
-                    convert = (0, pdf2pic_1.fromPath)(download.getDownloadPath(), options);
+                    convert = (0, dist_1.fromPath)(download.getDownloadPath(), options);
                     return [4 /*yield*/, convert.bulk(-1)];
                 case 2:
                     _a.sent();

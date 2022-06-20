@@ -1,7 +1,7 @@
 import { BrowserContext, Locator } from "playwright-chromium";
 import Jimp from "jimp";
 import { DownloaderHelper } from 'node-downloader-helper';
-import { fromPath } from "pdf2pic";
+import { fromPath } from "./custom/pdf2pic/dist";
 import database from "../db/schema";
 import { ReportModel } from "../models/ReportModel";
 import { rmSync, mkdirSync, existsSync, readdirSync } from "fs";
