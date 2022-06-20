@@ -44,7 +44,7 @@ var jimp_1 = __importDefault(require("jimp"));
 var node_downloader_helper_1 = require("node-downloader-helper");
 var pdf2pic_1 = require("pdf2pic");
 var schema_1 = __importDefault(require("../db/schema"));
-var check_1 = require("../models/check");
+var ReportModel_1 = require("../models/ReportModel");
 var fs_1 = require("fs");
 function check(context) {
     return __awaiter(this, void 0, void 0, function () {
@@ -75,9 +75,9 @@ function check(context) {
                 case 7:
                     document = _a.sent();
                     if (document == null)
-                        return [2 /*return*/, new check_1.CheckModel(false, label, url)];
+                        return [2 /*return*/, new ReportModel_1.ReportModel(false, label, url)];
                     else
-                        return [2 /*return*/, new check_1.CheckModel(true, "", "")];
+                        return [2 /*return*/, new ReportModel_1.ReportModel(true, "", "")];
                     return [2 /*return*/];
             }
         });
@@ -86,41 +86,48 @@ function check(context) {
 exports.check = check;
 function save(url) {
     return __awaiter(this, void 0, void 0, function () {
-        var download, options, storeAsImage, image, _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var download, options, convert;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     if ((0, fs_1.existsSync)('temp'))
                         (0, fs_1.rmSync)('temp', { recursive: true, force: true });
                     (0, fs_1.mkdirSync)('temp');
+                    (0, fs_1.mkdirSync)('temp/report');
+                    (0, fs_1.mkdirSync)('temp/output');
                     download = new node_downloader_helper_1.DownloaderHelper(url, 'temp');
                     return [4 /*yield*/, download.start()];
                 case 1:
-                    _c.sent();
+                    _a.sent();
                     options = {
                         density: 100,
                         saveFilename: "report",
-                        savePath: "temp",
+                        savePath: "temp/report",
                         format: "png",
-                        width: 1200,
-                        height: 675
+                        width: 1100,
+                        height: 720
                     };
-                    storeAsImage = (0, pdf2pic_1.fromPath)(download.getDownloadPath(), options);
-                    return [4 /*yield*/, storeAsImage(1)];
+                    convert = (0, pdf2pic_1.fromPath)(download.getDownloadPath(), options);
+                    return [4 /*yield*/, convert.bulk(-1)];
                 case 2:
-                    _c.sent();
-                    return [4 /*yield*/, jimp_1["default"].read('temp/report.1.png')];
-                case 3:
-                    image = _c.sent();
-                    _b = (_a = image).print;
-                    return [4 /*yield*/, jimp_1["default"].loadFont(jimp_1["default"].FONT_SANS_32_BLACK)];
-                case 4:
-                    _b.apply(_a, [_c.sent(), image.bitmap.width * 0.35, image.bitmap.height * 0.84, "Twitter - @PowerCut_LK"]);
-                    //image.print(await Jimp.loadFont(Jimp.FONT_SANS_16_BLACK), image.bitmap.width * 0.45, image.bitmap.height * 0.89, "Shameel Fazul")
-                    return [4 /*yield*/, image.writeAsync("temp/output.png")];
-                case 5:
-                    //image.print(await Jimp.loadFont(Jimp.FONT_SANS_16_BLACK), image.bitmap.width * 0.45, image.bitmap.height * 0.89, "Shameel Fazul")
-                    _c.sent();
+                    _a.sent();
+                    (0, fs_1.readdirSync)("temp/report").forEach(function (name) { return __awaiter(_this, void 0, void 0, function () {
+                        var image, _a, _b;
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
+                                case 0: return [4 /*yield*/, jimp_1["default"].read("temp/report/".concat(name))];
+                                case 1:
+                                    image = _c.sent();
+                                    _b = (_a = image).print;
+                                    return [4 /*yield*/, jimp_1["default"].loadFont(jimp_1["default"].FONT_SANS_16_BLACK)];
+                                case 2:
+                                    _b.apply(_a, [_c.sent(), image.bitmap.width * 0.80, image.bitmap.height * 0.95, "Twitter - @PowerCut_LK"]);
+                                    image.write("temp/output/".concat(name.slice(0, 8), "-output.png"));
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
                     return [2 /*return*/];
             }
         });

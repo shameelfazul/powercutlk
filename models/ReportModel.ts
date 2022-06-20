@@ -1,4 +1,4 @@
-export class CheckModel {
+export class ReportModel {
     status: boolean;
     label: string;
     url: string;

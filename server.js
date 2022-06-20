@@ -53,23 +53,43 @@ exports.__esModule = true;
 var dotenv_1 = __importDefault(require("dotenv"));
 var playwright_chromium_1 = require("playwright-chromium");
 var node_cron_1 = __importDefault(require("node-cron"));
-var schema_1 = __importDefault(require("./db/schema"));
 var fs_1 = require("fs");
 var twit_1 = __importDefault(require("twit"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var report_1 = require("./utilities/report");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var discord_webhook_node_1 = require("discord-webhook-node");
+var message_1 = require("./utilities/message");
 dotenv_1["default"].config();
 var device = playwright_chromium_1.devices["Desktop Chrome"];
-var hook = new discord_webhook_node_1.Webhook(process.env.DISCORD);
+var hook = new discord_webhook_node_1.Webhook(process.env.DISCORDDEV);
 var T = new twit_1["default"]({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 console.log("[PowerCutLK] : Service Started");
 node_cron_1["default"].schedule('0 0-23 * * *', function () { return main(); }, { scheduled: true, timezone: "Asia/Colombo" });
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var browser, context, report_2, image, error_1;
-        var _this = this;
+        function queue(report) {
+            var _this = this;
+            setTimeout(function () {
+                (0, fs_1.readFile)("temp/output/report.".concat((0, fs_1.readdirSync)('temp/report').length, "-output.png"), function (err, data) { return __awaiter(_this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!err) return [3 /*break*/, 1];
+                                console.log("it does not exuist");
+                                queue(report);
+                                return [3 /*break*/, 3];
+                            case 1: return [4 /*yield*/, (0, message_1.message)(T, hook, report)];
+                            case 2:
+                                _a.sent();
+                                _a.label = 3;
+                            case 3: return [2 /*return*/];
+                        }
+                    });
+                }); });
+            }, 1000);
+        }
+        var browser, context, report, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -86,43 +106,15 @@ function main() {
                     context = _a.sent();
                     return [4 /*yield*/, (0, report_1.check)(context)];
                 case 4:
-                    report_2 = _a.sent();
+                    report = _a.sent();
                     return [4 /*yield*/, browser.close()];
                 case 5:
                     _a.sent();
-                    if (!(report_2.status == false)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, (0, report_1.save)(report_2.url)];
+                    if (!(report.status == false)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, (0, report_1.save)(report.url)];
                 case 6:
                     _a.sent();
-                    image = (0, fs_1.readFileSync)('temp/output.png', { encoding: 'base64' });
-                    T.post('media/upload', { media_data: image }, function (err, data) {
-                        if (err)
-                            throw Error(err);
-                        var text = "".concat(report_2.label);
-                        var tweet = {
-                            status: text + "\n\n    ~ \uD83C\uDDF1\uD83C\uDDF0  STATUS ID ".concat(Math.floor(Math.random() * 1000), " ~\n[#PowerCutLK #SriLanka #lka #ceb]"),
-                            media_ids: [data.media_id_string]
-                        };
-                        T.post('statuses/update', tweet, function (err) { return __awaiter(_this, void 0, void 0, function () {
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0:
-                                        if (err)
-                                            throw Error(err);
-                                        hook.setUsername('PowerCut_LK'); //Overrides the default webhook username
-                                        hook.setAvatar('https://pbs.twimg.com/profile_images/1536671063983128577/qwofMeAi_400x400.jpg');
-                                        return [4 /*yield*/, hook.sendFile('temp/output.png')];
-                                    case 1:
-                                        _a.sent();
-                                        (0, fs_1.rmSync)('temp', { recursive: true, force: true });
-                                        return [4 /*yield*/, schema_1["default"].create({ label: report_2.label, url: report_2.url })];
-                                    case 2:
-                                        _a.sent();
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                    });
+                    queue(report);
                     _a.label = 7;
                 case 7:
                     ;
