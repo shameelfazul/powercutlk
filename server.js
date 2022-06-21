@@ -62,7 +62,7 @@ var discord_webhook_node_1 = require("discord-webhook-node");
 var message_1 = require("./utilities/message");
 dotenv_1["default"].config();
 var device = playwright_chromium_1.devices["Desktop Chrome"];
-var hook = new discord_webhook_node_1.Webhook(process.env.DISCORDDEV);
+var hook = new discord_webhook_node_1.Webhook(process.env.DISCORD);
 var T = new twit_1["default"]({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 console.log("[PowerCutLK] : Service Started");
 node_cron_1["default"].schedule('0 0-23 * * *', function () { return main(); }, { scheduled: true, timezone: "Asia/Colombo" });

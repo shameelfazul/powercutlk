@@ -12,7 +12,7 @@ import { message } from "./utilities/message";
 
 dotenv.config();
 const device = devices["Desktop Chrome"];
-const hook = new Webhook(process.env.DISCORDDEV as string);
+const hook = new Webhook(process.env.DISCORD as string);
 const T = new Twit({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 
 console.log(`[PowerCutLK] : Service Started`)
