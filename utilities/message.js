@@ -63,30 +63,37 @@ function message(twitterClient, discordWebhook, report) {
 exports.message = message;
 function tweet(client, report) {
     return __awaiter(this, void 0, void 0, function () {
-        var imageIds;
+        var ImageIds;
         var _this = this;
         return __generator(this, function (_a) {
-            imageIds = [];
+            ImageIds = [];
             (0, fs_1.readdirSync)("temp/output").forEach(function (name) { return __awaiter(_this, void 0, void 0, function () {
                 var image, count;
-                var _this = this;
                 return __generator(this, function (_a) {
                     image = (0, fs_1.readFileSync)("temp/output/".concat(name), { encoding: 'base64' });
                     count = (0, fs_1.readdirSync)("temp/output").length;
                     client.post('media/upload', { media_data: image }, function (err, data) {
                         if (err)
                             throw Error(err);
-                        imageIds.push(data.media_id_string);
-                        if (imageIds.length == count) {
-                            var tweet_1 = {
-                                status: report.label + "\n\n    ~ \uD83C\uDDF1\uD83C\uDDF0  STATUS ID ".concat(Math.floor(Math.random() * 1000), " ~\n[#PowerCutLK #SriLanka #lka #ceb]"),
-                                media_ids: imageIds.reverse()
-                            };
-                            client.post('statuses/update', tweet_1, function (err) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                        ImageIds.push({ Id: data.media_id_string, Index: Number(name.slice(7, 8)) });
+                        if (ImageIds.length == count) {
+                            var mediaIDs_1 = ImageIds.sort(function (a, b) { return a.Index - b.Index; }).map(function (x) { return x.Id; });
+                            client.post('statuses/update', {
+                                status: "".concat(report.label, "\n\n--- \u2B07\uFE0F More Schedules Down \u2B07\uFE0F ---\n\n    ~ \uD83C\uDDF1\uD83C\uDDF0  STATUS ID ").concat(Math.floor(Math.random() * 1000), " ~\n[#PowerCutLK #SriLanka #lka #ceb]"),
+                                media_ids: mediaIDs_1.slice(0, 4)
+                            }, function (err, data) {
                                 if (err)
                                     throw Error(err);
-                                return [2 /*return*/];
-                            }); }); });
+                                if (ImageIds.length > 4) {
+                                    client.post('statuses/update', {
+                                        status: "",
+                                        in_reply_to_status_id: data.id_str,
+                                        media_ids: mediaIDs_1.slice(4, 8)
+                                    }, function (err) { if (err)
+                                        throw Error(err); });
+                                }
+                                ;
+                            });
                         }
                         ;
                     });

@@ -13,7 +13,12 @@ export async function message(twitterClient : Twitter, discordWebhook : Webhook,
 
 
 async function tweet(client : Twitter, report : ReportModel) {
-    let imageIds : string[] = [];
+    type ImageId = {
+        Id: string;
+        Index: number
+    };
+
+    let ImageIds : ImageId[] = [];
 
     readdirSync("temp/output").forEach(async (name) => {
         let image = readFileSync(`temp/output/${name}`, { encoding: 'base64' });
@@ -22,15 +27,27 @@ async function tweet(client : Twitter, report : ReportModel) {
         client.post('media/upload', { media_data: image }, (err, data) => {
             if (err) throw Error(err);
 
-            imageIds.push(data.media_id_string);
+            ImageIds.push({ Id: data.media_id_string, Index: Number(name.slice(7, 8))})
 
-            if (imageIds.length == count) {
-                let tweet = {
-                    status: report.label + `\n\n    ~ 🇱🇰  STATUS ID ${Math.floor(Math.random()*1000)} ~\n[#PowerCutLK #SriLanka #lka #ceb]`,
-                    media_ids: imageIds.reverse()
-                }
+            if (ImageIds.length == count) {
+                let mediaIDs : string[] = ImageIds.sort((a, b) => a.Index - b.Index).map(x => x.Id);
 
-                client.post('statuses/update', tweet, async (err) => { if (err) throw Error(err) });
+                client.post('statuses/update', 
+                {
+                    status: `${report.label}\n\n--- ⬇️ More Schedules Down ⬇️ ---\n\n    ~ 🇱🇰  STATUS ID ${Math.floor(Math.random()*1000)} ~\n[#PowerCutLK #SriLanka #lka #ceb]`,
+                    media_ids: mediaIDs.slice(0, 4)
+                }, (err, data) => { 
+                    if (err) throw Error(err);
+                    
+                    if (ImageIds.length > 4) {
+                        client.post('statuses/update',
+                        {
+                            status: "",
+                            in_reply_to_status_id: data.id_str,
+                            media_ids: mediaIDs.slice(4, 8)
+                        }, (err) => {  if (err) throw Error(err) }) 
+                    };
+                });
             };
         });
     });
