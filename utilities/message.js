@@ -79,7 +79,7 @@ function tweet(client, report) {
                         if (ImageIds.length == count) {
                             var mediaIDs_1 = ImageIds.sort(function (a, b) { return a.Index - b.Index; }).map(function (x) { return x.Id; });
                             client.post('statuses/update', {
-                                status: "".concat(report.label, "\n\n--- \u2B07\uFE0F More Schedules Down \u2B07\uFE0F ---\n\n    ~ \uD83C\uDDF1\uD83C\uDDF0  STATUS ID ").concat(Math.floor(Math.random() * 1000), " ~\n[#PowerCutLK #SriLanka #lka #ceb]"),
+                                status: "".concat(report.label, " ").concat(ImageIds.length > 4 ? "\n\n--- \u2B07\uFE0F More Schedules Down \u2B07\uFE0F ---" : '', "\n\n    ~ \uD83C\uDDF1\uD83C\uDDF0  STATUS ID ").concat(Math.floor(Math.random() * 1000), " ~\n[#PowerCutLK #SriLanka #lka #ceb]"),
                                 media_ids: mediaIDs_1.slice(0, 4)
                             }, function (err, data) {
                                 if (err)

@@ -34,7 +34,7 @@ async function tweet(client : Twitter, report : ReportModel) {
 
                 client.post('statuses/update', 
                 {
-                    status: `${report.label}\n\n--- ⬇️ More Schedules Down ⬇️ ---\n\n    ~ 🇱🇰  STATUS ID ${Math.floor(Math.random()*1000)} ~\n[#PowerCutLK #SriLanka #lka #ceb]`,
+                    status: `${report.label} ${ImageIds.length > 4 ? `\n\n--- ⬇️ More Schedules Down ⬇️ ---` : ''}\n\n    ~ 🇱🇰  STATUS ID ${Math.floor(Math.random()*1000)} ~\n[#PowerCutLK #SriLanka #lka #ceb]`,
                     media_ids: mediaIDs.slice(0, 4)
                 }, (err, data) => { 
                     if (err) throw Error(err);
