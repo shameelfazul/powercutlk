@@ -33,7 +33,7 @@ async function main() {
         if (report.status == false) {
             await save(report.url);
             queue(report);
-        };
+        } else console.log("[PowerCutLK] : Report is up-to-date");
     } catch (error) {
        console.error(error);
     }
@@ -42,7 +42,7 @@ async function main() {
         setTimeout(() => {
             readFile(`temp/output/report.${readdirSync('temp/report').length}-output.png`, async (err, data) => {
                 if (err) {
-                   console.log("it does not exuist")
+                   console.log(`[PowerCutLK] : Queueing : ${readdirSync('temp/output').length}/${readdirSync('temp/report').length}`);
                     queue(report);
                 } else {
                     await message(T, hook, report);
