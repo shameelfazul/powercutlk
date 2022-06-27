@@ -84,22 +84,46 @@ function check(context) {
     });
 }
 exports.check = check;
-function save(url) {
+function counter(path) {
     return __awaiter(this, void 0, void 0, function () {
-        var download, options, convert;
-        var _this = this;
+        var options, convert;
         return __generator(this, function (_a) {
             switch (_a.label) {
+                case 0:
+                    options = {
+                        density: 100,
+                        saveFilename: "count",
+                        savePath: "temp/counter",
+                        format: "jpeg",
+                        width: 852,
+                        height: 480
+                    };
+                    convert = (0, pdf2pic_1.fromPath)(path, options);
+                    return [4 /*yield*/, convert.bulk(-1)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/, (0, fs_1.readdirSync)("temp/counter").length];
+            }
+        });
+    });
+}
+function save(url) {
+    return __awaiter(this, void 0, void 0, function () {
+        var download, options, convert, _a, _b;
+        var _this = this;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     if ((0, fs_1.existsSync)('temp'))
                         (0, fs_1.rmSync)('temp', { recursive: true, force: true });
                     (0, fs_1.mkdirSync)('temp');
                     (0, fs_1.mkdirSync)('temp/report');
+                    (0, fs_1.mkdirSync)('temp/counter');
                     (0, fs_1.mkdirSync)('temp/output');
                     download = new node_downloader_helper_1.DownloaderHelper(url, 'temp');
                     return [4 /*yield*/, download.start()];
                 case 1:
-                    _a.sent();
+                    _c.sent();
                     options = {
                         density: 100,
                         saveFilename: "report",
@@ -109,9 +133,11 @@ function save(url) {
                         height: 720
                     };
                     convert = (0, pdf2pic_1.fromPath)(download.getDownloadPath(), options);
-                    return [4 /*yield*/, convert.bulk(-1)];
-                case 2:
-                    _a.sent();
+                    _b = (_a = convert).bulk;
+                    return [4 /*yield*/, counter(download.getDownloadPath())];
+                case 2: return [4 /*yield*/, _b.apply(_a, [(_c.sent()) > 8 ? [1, 2, 3, 4, 5, 6, 7, 8] : -1])];
+                case 3:
+                    _c.sent();
                     (0, fs_1.readdirSync)("temp/report").forEach(function (name) { return __awaiter(_this, void 0, void 0, function () {
                         var image, _a, _b;
                         return __generator(this, function (_c) {

@@ -52,6 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var dotenv_1 = __importDefault(require("dotenv"));
 var playwright_chromium_1 = require("playwright-chromium");
+var node_cron_1 = __importDefault(require("node-cron"));
 var fs_1 = require("fs");
 var twit_1 = __importDefault(require("twit"));
 var mongoose_1 = __importDefault(require("mongoose"));
@@ -64,8 +65,7 @@ var device = playwright_chromium_1.devices["Desktop Chrome"];
 var hook = new discord_webhook_node_1.Webhook(process.env.DISCORD);
 var T = new twit_1["default"]({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 console.log("[PowerCutLK] : Service Started");
-//cron.schedule('0 0-23 * * *', () => main(), { scheduled: true, timezone: "Asia/Colombo" });
-main();
+node_cron_1["default"].schedule('0 0-23 * * *', function () { return main(); }, { scheduled: true, timezone: "Asia/Colombo" });
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         function queue(report) {
