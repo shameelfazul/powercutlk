@@ -26,7 +26,7 @@ RUN npm install
 
 COPY production/ /usr/src/app
 
-CMD printenv | grep -v "no_proxy" >> /etc/environment ; cron
+CMD printenv | grep -v "no_proxy" >> /etc/environment ; cron -f
 
 
 
