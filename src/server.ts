@@ -38,6 +38,7 @@ async function main() {
         };
     } catch (error) {
         console.error(error);
+        process.exit(0)
     }
 
     function queue(report : ReportModel) {
