@@ -1,2 +1,2 @@
-* 0-23 * * * node -r dotenv/config /usr/src/app/server.js > /proc/1/fd/1 2>/proc/1/fd/2
+* 0-23 * * * node -r /usr/src/app/dotenv/config /usr/src/app/server.js > /proc/1/fd/1 2>/proc/1/fd/2
 # Empty line
