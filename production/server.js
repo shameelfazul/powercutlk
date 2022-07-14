@@ -40,8 +40,11 @@ function main() {
                 yield (0, report_1.save)(report.url);
                 queue(report);
             }
-            else
+            else {
                 console.log("[PowerCutLK] : Report is up-to-date");
+                process.exit(0);
+            }
+            ;
         }
         catch (error) {
             console.error(error);

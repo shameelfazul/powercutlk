@@ -32,7 +32,10 @@ async function main() {
         if (report.status == false) {
             await save(report.url);
             queue(report);
-        } else console.log("[PowerCutLK] : Report is up-to-date");
+        } else {
+            console.log("[PowerCutLK] : Report is up-to-date")
+            process.exit(0)
+        };
     } catch (error) {
         console.error(error);
     }
