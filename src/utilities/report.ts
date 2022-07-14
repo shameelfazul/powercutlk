@@ -1,4 +1,5 @@
 import { BrowserContext, Locator } from "playwright-chromium";
+// @ts-ignore
 import Jimp from "jimp";
 import { DownloaderHelper } from 'node-downloader-helper';
 import { fromPath } from "pdf2pic";
@@ -20,7 +21,6 @@ export async function check(context : BrowserContext): Promise<ReportModel> {
     if (label  == null || url == null) throw TypeError("label or url is referencing null");
 
     const document = await database.findOne({ label, url });
-   
    if (document == null) return new ReportModel(false, label, url); else return new ReportModel(true, "", "");
 }
 

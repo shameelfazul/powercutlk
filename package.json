@@ -2,9 +2,14 @@
   "name": "powercutlk",
   "version": "1.0.0",
   "description": "Keep track of power outages in Sri Lanka",
-  "main": "server.js",
+  "main": "./production/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node -r dotenv/config ./production/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shameel-Fazul/powercutlk.git"
   },
   "keywords": [
     "bot"

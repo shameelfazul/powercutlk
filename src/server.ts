@@ -1,22 +1,21 @@
-import dotenv from "dotenv";
 import { chromium, devices } from 'playwright-chromium';
-import cron from "node-cron";
 import { readFile, readdirSync } from "fs";
+// @ts-ignore
 import Twit from "twit";
 import mongoose from 'mongoose';
 import { check, save } from './utilities/report';
 import { ReportModel } from './models/ReportModel';
+// @ts-ignore
 import moment from "moment-timezone";
 import { Webhook } from "discord-webhook-node";
 import { message } from "./utilities/message";
 
-dotenv.config();
 const device = devices["Desktop Chrome"];
 const hook = new Webhook(process.env.DISCORD as string);
 const T = new Twit({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 
 console.log(`[PowerCutLK] : Service Started`)
-cron.schedule('0 0-23 * * *', () => main(), { scheduled: true, timezone: "Asia/Colombo" });
+main()
 
 async function main() {
     try {
@@ -35,10 +34,10 @@ async function main() {
             queue(report);
         } else console.log("[PowerCutLK] : Report is up-to-date");
     } catch (error) {
-       console.error(error);
+        console.error(error);
     }
 
-    function queue(report) {
+    function queue(report : ReportModel) {
         setTimeout(() => {
             readFile(`temp/output/report.${readdirSync('temp/report').length}-output.png`, async (err, data) => {
                 if (err) {

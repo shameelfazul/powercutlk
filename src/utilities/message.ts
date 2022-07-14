@@ -1,3 +1,4 @@
+// @ts-ignore
 import Twitter from "twit";
 import { readdirSync, readFileSync, rmSync } from "fs";
 import database from "../db/schema";
@@ -9,6 +10,8 @@ export async function message(twitterClient : Twitter, discordWebhook : Webhook,
     await discord(discordWebhook, report);
 
     await database.create({ label: report.label, url: report.url });
+    
+    setTimeout(() => process.exit(0), 10000);
 }
 
 
@@ -24,7 +27,7 @@ async function tweet(client : Twitter, report : ReportModel) {
         let image = readFileSync(`temp/output/${name}`, { encoding: 'base64' });
         let count = readdirSync("temp/output").length;
 
-        client.post('media/upload', { media_data: image }, (err, data) => {
+        client.post('media/upload', { media_data: image }, (err : any, data : any) => {
             if (err) throw Error(err);
 
             ImageIds.push({ Id: data.media_id_string, Index: Number(name.slice(7, 8))})
@@ -36,7 +39,7 @@ async function tweet(client : Twitter, report : ReportModel) {
                 {
                     status: `${report.label} ${ImageIds.length > 4 ? `\n\n--- ⬇️ More Schedules Down ⬇️ ---` : ''}\n\n    ~ 🇱🇰  STATUS ID ${Math.floor(Math.random()*1000)} ~\n[#PowerCutLK #SriLanka #lka #ceb]`,
                     media_ids: mediaIDs.slice(0, 4)
-                }, (err, data) => { 
+                }, (err : any, data : any) => { 
                     if (err) throw Error(err);
                     
                     if (ImageIds.length > 4) {
@@ -45,7 +48,7 @@ async function tweet(client : Twitter, report : ReportModel) {
                             status: "",
                             in_reply_to_status_id: data.id_str,
                             media_ids: mediaIDs.slice(4, 8)
-                        }, (err) => {  if (err) throw Error(err) }) 
+                        }, (err : any) => {  if (err) throw Error(err) }) 
                     };
                 });
             };
