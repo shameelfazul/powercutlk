@@ -22,7 +22,7 @@ const report_1 = require("./utilities/report");
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const discord_webhook_node_1 = require("discord-webhook-node");
 const message_1 = require("./utilities/message");
-const device = playwright_chromium_1.devices["Desktop Chrome"];
+const device = playwright_chromium_1.devices["Galaxy S9+"];
 const hook = new discord_webhook_node_1.Webhook(process.env.DISCORD);
 const T = new twit_1.default({ consumer_key: process.env.CONSUMER_KEY, consumer_secret: process.env.CONSUMER_SECRET, access_token: process.env.ACCESS_TOKEN, access_token_secret: process.env.ACCESS_TOKEN_SECRET });
 console.log(`[PowerCutLK] : Service Started`);
