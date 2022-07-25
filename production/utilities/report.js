@@ -23,7 +23,7 @@ const fs_1 = require("fs");
 function check(context) {
     return __awaiter(this, void 0, void 0, function* () {
         let page = yield context.newPage();
-        yield page.goto(process.env.SOURCEURL, { timeout: 60000 });
+        yield page.goto(process.env.SOURCEURL, { timeout: 5 * 60000 });
         const element = yield page.locator(':nth-match(a:text("Power Interruption"), 2)');
         const label = yield element.textContent();
         const url = yield element.getAttribute("href");

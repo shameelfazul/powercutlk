@@ -9,7 +9,7 @@ import { rmSync, mkdirSync, existsSync, readdirSync, unlinkSync } from "fs";
 
 export async function check(context : BrowserContext): Promise<ReportModel> {
     let page = await context.newPage();
-    await page.goto(process.env.SOURCEURL as string, { timeout: 60000 });
+    await page.goto(process.env.SOURCEURL as string, { timeout: 5 * 60000 });
 
     const element : Locator = await page.locator(':nth-match(a:text("Power Interruption"), 2)');
 
